@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Corona Stats",
+  "description": "By up to date with corona stats...",
+  "version": "0.9.9",
+  "browser_action": {
+    "default_icon": "images/corona.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://damian-corona-api.herokuapp.com/*",
+    "storage"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  }
+}

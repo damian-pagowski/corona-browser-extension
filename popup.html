@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generic Launcher</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+      integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+      crossorigin="anonymous"
+    />
+
+    <style>
+      html,
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        font-size: 14;
+        padding: 0;
+
+        background: rgba(34, 38, 42, 0.78);
+      }
+
+      .container {
+        padding-left: 16px;
+        padding-right: 14px;
+        padding-bottom: 14px;
+        color: #fff;
+        min-width: 250px;
+        min-height: 180px;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .title {
+        text-align: center;
+        padding-top: 1rem;
+      }
+      .col {
+        background-color: rgb(33, 37, 41);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+        padding: 5px;
+        color: #fff;
+      }
+
+      .card-header {
+        padding: 0.5rem;
+        margin-bottom: 0;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        text-align: center;
+      }
+      .card-body {
+        padding: 0.5rem 1rem;
+        word-wrap: break-word;
+        text-align: center;
+      }
+
+      .badge {
+        color: #000000;
+        background-color:#ffff00;
+        display: inline-block;
+        padding: 0.25em 0.4em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+          border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+      i {
+        padding-bottom: 10px;
+      }
+
+      .control {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+      }
+      .hidden {
+        display: none;
+        transition: display 2s;
+      }
+
+      #globe:hover {
+        text-shadow: 0px 0px 9px red;
+      }
+      #select {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      #ok-button {
+        display: block;
+        margin: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="corona-data">
+        <h1 class="title">
+          <i id="globe" class="fas fa-globe-europe"></i>
+
+          <span id="name">Worldwide</span>
+        </h1>
+        <div class="grid-container">
+          <div class="col">
+            <div class="card-header">
+              <i class="fas fa-viruses fa-2x"></i> Cases
+            </div>
+            <div class="card-body">
+              <div><span id="totalCases">2.29M</span></div>
+              <div><span class="badge" id="newCases"></span></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card-header">
+              <i class="fas fa-ghost fa-2x"></i> Deaths
+            </div>
+            <div class="card-body">
+              <div><span id="totalDeaths">2.29M</span></div>
+              <!--  -->
+
+              <div><span class="badge" id="newDeaths"></span></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card-header">
+              <i class="fas fa-stethoscope fa-2x"></i> Recovered
+            </div>
+            <div class="card-body">
+              <div><span id="totalRecovered">2.29M</span></div>
+              <!-- <span>325</span> -->
+            </div>
+          </div>
+        </div>
+        <!-- end of container -->
+      </div>
+      <div id="country-select" class="hidden">
+        <h1 class="title">
+          Select Country
+        </h1>
+        <select class="control" id="select"> </select>
+        <button class="control" id="ok-button">OK</button>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
