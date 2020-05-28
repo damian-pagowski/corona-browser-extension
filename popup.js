@@ -1,23 +1,23 @@
+const getSettings = () => JSON.parse(localStorage.getItem("corona-settings"));
+
 async function getCountryStats() {
-  const country = localStorage.getItem("corona-country") || "poland";
+  const settings = getSettings();
+  const country = settings ? settings.country : "thailand";
   const URL_STATS = `https://damian-corona-api.herokuapp.com/countries/${country}?latest_only=1`;
+  console.log(`Checking stats for: ${country} ${Date.now()}`);
   await fetch(URL_STATS)
     .then((response) => response.json())
     .then((data) => {
       document.getElementById("name").innerText = data.name;
       document.getElementById("totalCases").innerText = data.totalCases;
-    //   localStorage.setItem("corona-badge", data.totalCases);
-
-    //   const value = localStorage.getItem("corona-badge") || 0;
-
-    document.getElementById("totalDeaths").innerText = data.totalDeaths;
-    document.getElementById("totalRecovered").innerText = data.totalRecovered;
-    document.getElementById("newDeaths").innerText = data.newDeaths;
-    //   badge
-      document.getElementById("newCases").innerText = data.newCases;
+      document.getElementById("totalDeaths").innerText = data.totalDeaths;
+      document.getElementById("totalRecovered").innerText = data.totalRecovered;
+      document.getElementById("newDeaths").innerText = data.newDeaths || 0;
+      document.getElementById("newCases").innerText = data.newCases || 0;
+      // BADGE
       chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
       chrome.browserAction.setBadgeText({ text: `${data.newCases || 0}` });
-    //   
+      //
     });
 }
 
@@ -30,9 +30,16 @@ async function buildDropdowOptions() {
         const option = document.createElement("option");
         option.text = element;
         option.value = element.toLowerCase().replace(/\s/g, "");
-        var select = document.getElementById("select");
+        const select = document.getElementById("country-select");
         select.appendChild(option);
       });
+    })
+    .then(() => {
+      const settings = getSettings();
+      if (settings)
+        document.getElementById("country-select").value = settings.country;
+      document.getElementById("synchronization-select").value =
+        settings.synchronization;
     });
 }
 
@@ -40,21 +47,37 @@ async function main() {
   await getCountryStats();
   await buildDropdowOptions();
 }
-main();
 
 document.getElementById("globe").addEventListener("click", () => {
   const coronaPanel = document.getElementById("corona-data");
-  const countrySelect = document.getElementById("country-select");
-  countrySelect.classList.toggle("hidden");
+  const settingsPanel = document.getElementById("settings");
+  settingsPanel.classList.toggle("hidden");
   coronaPanel.classList.toggle("hidden");
 });
 
-document.getElementById("ok-button").addEventListener("click", () => {
+document.getElementById("ok-button").addEventListener("click", (e) => {
+  e.preventDefault();
   const coronaPanel = document.getElementById("corona-data");
-  const countrySelect = document.getElementById("country-select");
-  const country = document.getElementById("select").value;
-  localStorage.setItem("corona-country", country);
-  countrySelect.classList.toggle("hidden");
+  const settingsPanel = document.getElementById("settings");
+  //   dropdowns
+  const country = document.getElementById("country-select").value;
+  const synchronization = document.getElementById("synchronization-select")
+    .value;
+  // save settings
+  const settings = { country, synchronization };
+  //   localStorage.setItem("corona-country", country);
+  localStorage.setItem("corona-settings", JSON.stringify(settings));
+  
+  //   switch displayed panel
+  settingsPanel.classList.toggle("hidden");
   coronaPanel.classList.toggle("hidden");
+  setSynchronization(synchronization);
   getCountryStats();
 });
+const settings = getSettings();
+const synchronization = settings ? settings.synchronization : 5;
+
+function setSynchronization(synchronization) {
+  setInterval(getCountryStats, synchronization * 60 * 1000);
+}
+main();
