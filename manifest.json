@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Corona Stats",
   "description": "By up to date with corona stats...",
-  "version": "1.0",
+  "version": "1.1",
   "icons": {
     "16": "images/corona_16.png",
     "32": "images/corona_32.png",

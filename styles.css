@@ -172,14 +172,14 @@ h2 {
 h5 {
   font-size: 1.25rem;
 }
-.container {
+/* .container {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-}
-@media (min-width: 576px) {
+} */
+/* @media (min-width: 576px) {
   .container {
     max-width: 540px;
   }
@@ -218,7 +218,7 @@ h5 {
   .container {
     max-width: 1140px;
   }
-}
+} */
 .form-control {
   display: block;
   width: 100%;
@@ -447,6 +447,7 @@ body {
   display: grid;
   grid-column-gap: 10px;
   grid-template-columns: 1fr 1fr 1fr;
+  transition: display 1.25s;
 }
 .title {
   text-align: center;
