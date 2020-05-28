@@ -1,10 +1,23 @@
 const getSettings = () => JSON.parse(localStorage.getItem("corona-settings"));
 
+const hideCoronaData = () => {
+  document.querySelector(".container").classList.add("spinner-3");
+  const coronaPanel = document.getElementById("corona-data");
+  coronaPanel.classList.toggle("hidden");
+};
+
+const showCoronaData = () => {
+  document.querySelector(".container").classList.remove("spinner-3");
+  const coronaPanel = document.getElementById("corona-data");
+  coronaPanel.classList.toggle("hidden");
+};
+
 async function getCountryStats() {
   const settings = getSettings();
-  const country = settings ? settings.country : "thailand";
+  const country = settings ? settings.country || "japan" : "thailand";
   const URL_STATS = `https://damian-corona-api.herokuapp.com/countries/${country}?latest_only=1`;
   console.log(`Checking stats for: ${country} ${Date.now()}`);
+  hideCoronaData();
   await fetch(URL_STATS)
     .then((response) => response.json())
     .then((data) => {
@@ -18,6 +31,9 @@ async function getCountryStats() {
       chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
       chrome.browserAction.setBadgeText({ text: `${data.newCases || 0}` });
       //
+    })
+    .then(() => {
+      showCoronaData();
     });
 }
 
@@ -36,10 +52,14 @@ async function buildDropdowOptions() {
     })
     .then(() => {
       const settings = getSettings();
-      if (settings)
-        document.getElementById("country-select").value = settings.country;
-      document.getElementById("synchronization-select").value =
-        settings.synchronization;
+      if (settings) {
+        const country = settings ? settings.country || "japan" : "thailand";
+        const synchronization = settings ? settings.synchronization || 5 : 5;
+        document.getElementById("country-select").value = country;
+        document.getElementById(
+          "synchronization-select"
+        ).value = synchronization;
+      }
     });
 }
 
@@ -67,7 +87,7 @@ document.getElementById("ok-button").addEventListener("click", (e) => {
   const settings = { country, synchronization };
   //   localStorage.setItem("corona-country", country);
   localStorage.setItem("corona-settings", JSON.stringify(settings));
-  
+
   //   switch displayed panel
   settingsPanel.classList.toggle("hidden");
   coronaPanel.classList.toggle("hidden");
